@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { motion } from 'motion/react';
+import { useState, useEffect, useRef } from 'react';
+import { motion, useScroll, useTransform } from 'motion/react';
 import { Screen } from '../types';
 import { ArrowRight, ArrowUpRight, ShieldCheck, Activity, Eye, Compass, HelpCircle } from 'lucide-react';
 
@@ -10,6 +10,23 @@ interface LandingViewProps {
 export default function LandingView({ onScreenChange }: LandingViewProps) {
   // Interactive HUD selector states
   const [activeSystem, setActiveSystem] = useState<'hud' | 'life' | null>('hud');
+
+  // Parallax scroll effect for the cockpit systems section
+  const cockpitRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress: cockpitProgress } = useScroll({
+    target: cockpitRef,
+    offset: ['start end', 'end start'],
+  });
+  const helmetParallaxY = useTransform(cockpitProgress, [0, 1], [110, -110]);
+  const helmetParallaxRotate = useTransform(cockpitProgress, [0, 1], [-4, 4]);
+
+  // Parallax for the final space section
+  const finalRef = useRef<HTMLElement>(null);
+  const { scrollYProgress: finalProgress } = useScroll({
+    target: finalRef,
+    offset: ['start end', 'end start'],
+  });
+  const finalBgY = useTransform(finalProgress, [0, 1], ['-12%', '12%']);
   
   // Terminal scrolling memory effect
   const [memoryLines, setMemoryLines] = useState([
@@ -61,9 +78,9 @@ export default function LandingView({ onScreenChange }: LandingViewProps) {
           aria-hidden="true"
         >
           <img
-            src="/images/astronaut-hero.png"
+            src="/images/astronaut-hero-cut.png"
             alt=""
-            className="hero-image-mask absolute right-[4%] top-1/2 -translate-y-1/2 h-[105%] max-h-none w-auto object-cover object-left"
+            className="absolute right-[4%] top-1/2 -translate-y-1/2 h-[100%] max-h-none w-auto object-contain drop-shadow-2xl"
           />
         </motion.div>
 
@@ -159,29 +176,32 @@ export default function LandingView({ onScreenChange }: LandingViewProps) {
               </div>
             </div>
 
-            {/* Suit Blueprint Vector Art */}
-            <div className="my-8 flex justify-center items-center h-48 relative pointer-events-none z-10">
-              <div className="absolute border border-dashed border-zinc-800 rounded-full w-48 h-48 animate-spin" style={{ animationDuration: '40s' }} />
-              <div className="absolute border border-zinc-800 rounded-full w-36 h-36" />
-              <div className="absolute border border-zinc-800 rounded-full w-24 h-24" />
+            {/* Suit Helmet Showcase */}
+            <div className="my-8 flex justify-center items-center h-64 md:h-80 relative pointer-events-none z-10">
+              <div className="absolute border border-dashed border-zinc-800 rounded-full w-64 h-64 md:w-80 md:h-80 animate-spin" style={{ animationDuration: '40s' }} />
+              <div className="absolute border border-zinc-800 rounded-full w-48 h-48 md:w-60 md:h-60" />
               
               {/* Monospaced Blueprint labels */}
-              <div className="absolute -left-16 text-[9px] font-mono text-zinc-500 border-b border-zinc-800 pb-0.5">
+              <div className="absolute left-0 md:left-8 top-4 text-[9px] font-mono text-zinc-500 border-b border-zinc-800 pb-0.5">
                 [HELMET DOME] OVERLAY S-9
               </div>
-              <div className="absolute -right-20 text-[9px] font-mono text-zinc-500 border-b border-zinc-800 pb-0.5">
+              <div className="absolute right-0 md:right-8 top-1/2 text-[9px] font-mono text-zinc-500 border-b border-zinc-800 pb-0.5">
                 [EXO-STRUCTURE] TITANIUM GR-5
               </div>
-              <div className="absolute bottom-2 text-[9px] font-mono text-zinc-500">
+              <div className="absolute bottom-2 left-4 md:left-16 text-[9px] font-mono text-zinc-500">
                 [PRIMARY LIFE SUPPORT] O2 CYCLE 100%
               </div>
 
-              {/* Simple stylized outline of a spacesuit helmet */}
-              <svg className="w-20 h-20 text-zinc-700 opacity-60" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1">
-                <path d="M12 2C6.5 2 2 6.5 2 12c0 2.5 1 4.5 2.5 6l1.5-1.5C5 15.3 4 13.8 4 12c0-4.4 3.6-8 8-8s8 3.6 8 8c0 1.8-1 3.3-2 4.5l1.5 1.5c1.5-1.5 2.5-3.5 2.5-6 0-5.5-4.5-10-10-10z" />
-                <path d="M12 6c-3.3 0-6 2.7-6 6s2.7 6 6 6 6-2.7 6-6-2.7-6-6-6z" />
-                <path d="M7 12h10M12 7v10" strokeDasharray="1 1" />
-              </svg>
+              {/* Real AX-09 Helmet render */}
+              <motion.img
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-80px' }}
+                transition={{ duration: 0.9, ease: 'easeOut' }}
+                src="/images/helmet-side-cut.png"
+                alt="AX-09 EVA helmet, side view with open visor and life-support tubing"
+                className="relative h-full w-auto object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,0.6)]"
+              />
             </div>
 
             <div className="flex flex-col md:flex-row justify-between items-end gap-6 z-10 border-t border-zinc-900 pt-6">
@@ -245,17 +265,20 @@ export default function LandingView({ onScreenChange }: LandingViewProps) {
             <p className="text-zinc-500 text-xs font-mono mt-2">Click highlighted areas below to query sub-system specifications</p>
           </header>
 
-          <div className="relative w-full h-[550px] flex items-center justify-center border border-black/5 rounded-2xl bg-white overflow-hidden shadow-sm">
+          <div ref={cockpitRef} className="relative w-full h-[550px] flex items-center justify-center border border-black/5 rounded-2xl bg-white overflow-hidden shadow-sm">
             
             {/* Concentric Dashed Circles */}
             <div className="absolute border border-dashed border-zinc-200 rounded-full w-[460px] h-[460px] animate-spin" style={{ animationDuration: '60s' }} />
             <div className="absolute border border-dashed border-zinc-300 rounded-full w-[340px] h-[340px]" />
             <div className="absolute border border-zinc-200 rounded-full w-[220px] h-[220px]" />
-            <div className="absolute border border-dotted border-zinc-400 rounded-full w-[100px] h-[100px]" />
 
-            {/* Central Target Grid Crosshair */}
-            <div className="absolute w-8 h-[1px] bg-black/40" />
-            <div className="absolute h-8 w-[1px] bg-black/40" />
+            {/* Parallax AX-09 Helmet - front view, moves on scroll */}
+            <motion.img
+              src="/images/helmet-front-cut.png"
+              alt="AX-09 EVA helmet, front view with transparent dome"
+              style={{ y: helmetParallaxY, rotate: helmetParallaxRotate }}
+              className="relative z-10 h-[320px] md:h-[400px] w-auto object-contain pointer-events-none drop-shadow-[0_30px_50px_rgba(0,0,0,0.25)]"
+            />
             
             {/* Clickable Sensor Dot Left - HUD System */}
             <button 
@@ -379,12 +402,17 @@ export default function LandingView({ onScreenChange }: LandingViewProps) {
               {/* Card 1: Mobility */}
               <div 
                 onClick={() => onScreenChange('Dashboard')}
-                className="bg-white border border-black/5 rounded-lg p-8 flex flex-col justify-end h-[420px] shadow-sm hover:border-black/20 hover:shadow-md transition-all duration-300 cursor-pointer group"
+                className="relative bg-white border border-black/5 rounded-lg p-8 flex flex-col justify-end h-[420px] shadow-sm hover:border-black/20 hover:shadow-md transition-all duration-300 cursor-pointer group overflow-hidden"
               >
-                <div className="mb-auto text-zinc-300 group-hover:text-black transition-colors">
+                <div className="mb-auto text-zinc-300 group-hover:text-black transition-colors relative z-10">
                   <Compass className="w-10 h-10 stroke-1" />
                 </div>
-                <div>
+                <img
+                  src="/images/cyber-arm-cut.png"
+                  alt="Robotic cyber arm with articulated fingers and data port"
+                  className="absolute right-[-15%] top-[12%] w-[115%] max-w-none object-contain transition-transform duration-500 group-hover:scale-105 pointer-events-none"
+                />
+                <div className="relative z-10">
                   <span className="text-[8px] font-mono text-zinc-400 tracking-widest uppercase block mb-1">MODULE AX-01</span>
                   <h3 className="font-technical text-4xl mb-3 text-black group-hover:tracking-wider transition-all duration-300" style={{ fontFamily: 'Anton, sans-serif' }}>
                     MOBILITY
@@ -398,12 +426,17 @@ export default function LandingView({ onScreenChange }: LandingViewProps) {
               {/* Card 2: EVA Systems */}
               <div 
                 onClick={() => onScreenChange('Dashboard')}
-                className="bg-white border border-black/5 rounded-lg p-8 flex flex-col justify-end h-[420px] shadow-sm hover:border-black/20 hover:shadow-md transition-all duration-300 cursor-pointer group"
+                className="relative bg-white border border-black/5 rounded-lg p-8 flex flex-col justify-end h-[420px] shadow-sm hover:border-black/20 hover:shadow-md transition-all duration-300 cursor-pointer group overflow-hidden"
               >
-                <div className="mb-auto text-zinc-300 group-hover:text-black transition-colors">
+                <div className="mb-auto text-zinc-300 group-hover:text-black transition-colors relative z-10">
                   <ShieldCheck className="w-10 h-10 stroke-1" />
                 </div>
-                <div>
+                <img
+                  src="/images/pistol-cut.png"
+                  alt="Futuristic sidearm with exposed blue energy coils"
+                  className="absolute right-[2%] top-[2%] h-[68%] w-auto object-contain transition-transform duration-500 group-hover:scale-105 pointer-events-none"
+                />
+                <div className="relative z-10">
                   <span className="text-[8px] font-mono text-zinc-400 tracking-widest uppercase block mb-1">MODULE AX-02</span>
                   <h3 className="font-technical text-4xl mb-3 text-black group-hover:tracking-wider transition-all duration-300" style={{ fontFamily: 'Anton, sans-serif' }}>
                     EVA SYSTEMS
@@ -415,6 +448,62 @@ export default function LandingView({ onScreenChange }: LandingViewProps) {
               </div>
             </div>
 
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 4: Final Space Section */}
+      <section ref={finalRef} className="relative h-screen overflow-hidden bg-black" aria-label="Deep space mission">
+        {/* Parallax background image */}
+        <motion.div style={{ y: finalBgY }} className="absolute inset-[-14%]">
+          <img
+            src="/images/space-final.png"
+            alt="Astronaut in an AX-09 EVA suit floating above Earth with the Moon in the distance"
+            className="w-full h-full object-cover"
+          />
+        </motion.div>
+
+        {/* Subtle darkening for text readability */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/30 to-transparent" />
+
+        {/* Overlay content */}
+        <div className="relative z-10 h-full flex flex-col justify-center px-8 md:px-20 max-w-7xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-100px' }}
+            transition={{ duration: 0.9, ease: 'easeOut' }}
+            className="max-w-2xl"
+          >
+            <span className="text-[10px] font-mono border border-white/25 rounded-full px-4 py-1.5 text-zinc-300 uppercase tracking-widest bg-white/5 backdrop-blur-sm">
+              深宇宙 • DEEP SPACE READY
+            </span>
+
+            <h2
+              className="text-6xl sm:text-7xl md:text-8xl font-technical text-white leading-none mt-8 mb-6 text-balance"
+              style={{ fontFamily: 'Anton, sans-serif' }}
+            >
+              THE VOID IS<br />CALLING
+            </h2>
+
+            <p className="text-sm md:text-base text-zinc-300 max-w-sm font-mono leading-relaxed mb-10">
+              Beyond the last tether, there is only you and the AX-09. Every seam, every seal, every system — built so humanity can answer.
+            </p>
+
+            <button
+              onClick={() => onScreenChange('Dashboard')}
+              className="inline-flex items-center justify-between bg-white text-black hover:bg-zinc-200 px-8 py-4 rounded-full min-w-[240px] transition-all duration-300 group cursor-pointer"
+            >
+              <span className="text-xs font-bold tracking-widest uppercase font-sans">BEGIN THE MISSION</span>
+              <ArrowRight className="h-4 w-4 transform group-hover:translate-x-1.5 transition-transform" />
+            </button>
+          </motion.div>
+
+          {/* Bottom telemetry line */}
+          <div className="absolute bottom-8 left-8 md:left-20 right-8 md:right-20 flex justify-between items-end text-[9px] font-mono text-zinc-400 uppercase tracking-widest border-t border-white/10 pt-4">
+            <span>ALT: 408 KM • LEO</span>
+            <span className="hidden md:inline">O2: 98% • SUIT PRESSURE NOMINAL</span>
+            <span>永遠軌道 // AX-09</span>
           </div>
         </div>
       </section>
