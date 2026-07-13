@@ -1,0 +1,52 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=JetBrains+Mono:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-technical: "Anton", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+}
+
+@layer utilities {
+  .bg-technical-lines {
+    background-image: 
+        radial-gradient(circle at 20% 20%, transparent 0%, transparent 80%, rgba(0,0,0,0.02) 81%, transparent 82%),
+        radial-gradient(circle at 20% 20%, transparent 0%, transparent 60%, rgba(0,0,0,0.02) 61%, transparent 62%);
+    background-size: 100% 100%;
+  }
+
+  .font-technical-header {
+    font-family: 'Anton', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+    line-height: 0.9;
+  }
+}
+
+:root {
+  --ather-surface: #fbf9f9;
+  --ather-text: #000000;
+  --ather-muted: #666666;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--ather-surface);
+  color: var(--ather-text);
+  overflow-x: hidden;
+}
+
+/* Custom scanlines and noise for simulator HUD */
+.scanlines {
+  position: relative;
+}
+.scanlines::before {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+  z-index: 20;
+  background-size: 100% 2px, 3px 100%;
+  pointer-events: none;
+}

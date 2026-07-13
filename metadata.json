@@ -1,0 +1,6 @@
+{
+  "name": "ATHER - Built For The Void",
+  "description": "Orbital Precision EVA Suit interface featuring real-time telemetry monitoring, a helmet HUD simulator, dynamic space-grade system configurations, and a Vanguard Command AI assistant.",
+  "requestFramePermissions": ["camera"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
