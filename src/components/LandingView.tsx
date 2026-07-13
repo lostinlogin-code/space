@@ -76,7 +76,7 @@ export default function LandingView({ onScreenChange }: LandingViewProps) {
           <img
             src="/images/astronaut-hero-cut.png"
             alt=""
-            className="absolute inset-0 w-full h-full object-cover object-[50%_15%] drop-shadow-2xl"
+            className="absolute left-1/2 -translate-x-[45%] bottom-0 h-[95%] w-auto max-w-none object-contain drop-shadow-2xl"
           />
         </motion.div>
 
