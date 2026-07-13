@@ -1,7 +1,10 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'motion/react';
 import { Screen } from '../types';
-import { ArrowRight, ArrowUpRight, ShieldCheck, Activity, Eye, Compass, HelpCircle } from 'lucide-react';
+import { ArrowUpRight, ShieldCheck, Activity, Eye, Compass } from 'lucide-react';
+import Hero from './landing/Hero';
+import ParallaxFrame from './landing/ParallaxFrame';
+import HelmetShowcase from './landing/HelmetShowcase';
+import WeaponSection from './landing/WeaponSection';
 
 interface LandingViewProps {
   onScreenChange: (screen: Screen) => void;
@@ -37,84 +40,15 @@ export default function LandingView({ onScreenChange }: LandingViewProps) {
   }, []);
 
   return (
-    <div className="min-h-screen bg-technical-lines relative select-none">
-      
-      {/* SECTION 1: Hero Section */}
-      <header className="relative min-h-[85vh] flex flex-col justify-center overflow-hidden px-8 md:px-20 py-20">
-        
-        {/* Large Vertical Background Kanji - Match mockup perfectly */}
-        <div className="absolute right-0 top-1/2 -translate-y-1/2 h-[70%] flex items-center pointer-events-none select-none w-1/3 z-0">
-          <div className="grid grid-cols-2 text-[16vw] leading-[0.75] font-black opacity-5 gap-y-10 gap-x-6 text-black select-none font-technical">
-            <div className="flex items-center justify-center">真</div>
-            <div className="flex items-center justify-center">空</div>
-            <div className="flex items-center justify-center">領</div>
-            <div className="flex items-center justify-center">域</div>
-          </div>
-        </div>
+    <div className="bg-technical-lines relative select-none">
 
-        {/* Decorative Grid Lines to match technical blueprint style */}
-        <div className="absolute inset-0 border-x border-black/5 pointer-events-none max-w-7xl mx-auto z-0" />
-        <div className="absolute top-[20%] left-0 right-0 h-[1px] bg-black/5 pointer-events-none" />
-        <div className="absolute bottom-[20%] left-0 right-0 h-[1px] bg-black/5 pointer-events-none" />
+      {/* SECTION 1: Full-screen Hero */}
+      <Hero onScreenChange={onScreenChange} />
 
-        {/* Content Column */}
-        <div className="relative z-10 max-w-2xl text-left">
-          <motion.div 
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="mb-8"
-          >
-            <span className="text-[10px] font-mono border border-black/15 rounded-full px-4 py-1.5 text-zinc-600 uppercase tracking-widest bg-white/50 backdrop-blur-sm">
-              高機能軌道 • EVA SYSTEM
-            </span>
-          </motion.div>
+      {/* SECTION 2: Pinned frame with scroll-driven image swap */}
+      <ParallaxFrame />
 
-          <motion.h1 
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, ease: 'easeOut' }}
-            className="text-7xl sm:text-8xl md:text-9xl font-technical mb-8 text-black leading-none"
-            id="main-headline"
-            style={{ fontFamily: 'Anton, sans-serif' }}
-          >
-            BUILT FOR<br />THE VOID
-          </motion.h1>
-
-          <motion.p 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="text-sm md:text-base text-zinc-500 mb-12 max-w-sm font-mono leading-relaxed"
-          >
-            Pressure-rated extravehicular activity (EVA) systems engineered for deep-space exploration and lunar surface operations.
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.5 }}
-            className="flex flex-col sm:flex-row gap-4"
-          >
-            <button 
-              onClick={() => onScreenChange('Dashboard')}
-              className="inline-flex items-center justify-between bg-black text-white hover:bg-zinc-800 px-8 py-4 rounded-full min-w-[240px] transition-all duration-300 group cursor-pointer"
-            >
-              <span className="text-xs font-bold tracking-widest uppercase font-sans">MEET THE AX-09</span>
-              <ArrowRight className="h-4 w-4 transform group-hover:translate-x-1.5 transition-transform" />
-            </button>
-
-            <button 
-              onClick={() => onScreenChange('HUDSimulator')}
-              className="inline-flex items-center justify-center border border-black/15 bg-white/60 hover:bg-zinc-50 text-black px-8 py-4 rounded-full min-w-[200px] transition-all duration-300 text-xs font-bold tracking-widest uppercase font-sans cursor-pointer"
-            >
-              SIMULATE HELMET HUD
-            </button>
-          </motion.div>
-        </div>
-      </header>
-
-      {/* SECTION 2: Space Suits Section */}
+      {/* SECTION 3: Space Suits Section */}
       <section className="py-24 px-6 md:px-12 bg-white border-y border-black/5" id="suits">
         <div className="max-w-6xl mx-auto">
           <header className="text-center mb-16">
@@ -219,7 +153,13 @@ export default function LandingView({ onScreenChange }: LandingViewProps) {
         </div>
       </section>
 
-      {/* SECTION 3: Interactive System HUD & Life Support Integration */}
+      {/* SECTION 4: Helmet gallery with button-controlled switching */}
+      <HelmetShowcase />
+
+      {/* SECTION 5: Direct Energy Unit sidearm */}
+      <WeaponSection />
+
+      {/* SECTION 6: Interactive System HUD & Life Support Integration */}
       <section className="py-24 bg-zinc-50 border-b border-black/5 overflow-hidden">
         <div className="max-w-6xl mx-auto px-6">
           <header className="text-center mb-12">

@@ -1,29 +1,23 @@
-import { Screen } from '../types';
-
-interface FooterProps {
-  onScreenChange: (screen: Screen) => void;
-}
-
-export default function Footer({ onScreenChange }: FooterProps) {
+/**
+ * Image footer — the deep-space astronaut render is the final element
+ * of the site. Nothing renders after it.
+ */
+export default function Footer() {
   return (
-    <footer className="py-12 px-8 border-t border-black/5 bg-white">
-      <div className="max-w-[1440px] mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
-        <div className="flex items-center gap-4">
-          <div 
-            onClick={() => onScreenChange('Landing')}
-            className="w-6 h-6 bg-black rounded-sm flex items-center justify-center cursor-pointer hover:scale-105 transition-transform"
-          >
-            <span className="text-white font-technical text-sm leading-none">A</span>
-          </div>
-          <div className="text-[10px] font-bold tracking-widest text-zinc-400 uppercase font-mono">
-            © 2026 ATHER SYSTEM ARCHITECTURE • ORBITAL GRADE
-          </div>
-        </div>
-        <div className="flex gap-8 text-[10px] font-bold tracking-widest uppercase font-mono">
-          <a href="#" className="text-zinc-500 hover:text-black transition-colors">Privacy</a>
-          <a href="#" className="text-zinc-500 hover:text-black transition-colors">Terms</a>
-          <a href="#" className="text-zinc-500 hover:text-black transition-colors">Telemetry Status</a>
-        </div>
+    <footer className="relative w-full bg-black leading-none">
+      <img
+        src="/images/footer-space.png"
+        alt="Astronaut in ATHER EVA suit floating above Earth with the Moon in the distance"
+        className="block w-full h-auto min-h-[320px] object-cover object-center"
+      />
+      {/* Subtle brand line over the bottom of the image */}
+      <div className="absolute bottom-0 left-0 right-0 flex flex-col sm:flex-row items-center justify-between gap-2 px-6 md:px-12 py-4 bg-gradient-to-t from-black/70 to-transparent">
+        <span className="text-white font-semibold tracking-[0.25em] text-xs uppercase" style={{ fontFamily: 'Inter, sans-serif' }}>
+          ATHER
+        </span>
+        <span className="text-[9px] font-mono tracking-widest text-zinc-300 uppercase text-center">
+          © 2026 ATHER SYSTEM ARCHITECTURE • ORBITAL GRADE
+        </span>
       </div>
     </footer>
   );

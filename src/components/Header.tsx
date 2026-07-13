@@ -18,15 +18,12 @@ export default function Header({ currentScreen, onScreenChange }: HeaderProps) {
   ];
 
   return (
-    <nav className="flex items-center justify-between px-6 md:px-12 py-5 bg-white/85 backdrop-blur-md sticky top-0 z-50 border-b border-black/5">
-      {/* Brand Logo */}
+    <nav className="flex items-center justify-between px-6 md:px-12 h-16 bg-white/85 backdrop-blur-md sticky top-0 z-50 border-b border-black/5">
+      {/* Brand wordmark */}
       <div 
         onClick={() => { onScreenChange('Landing'); setMobileMenuOpen(false); }} 
-        className="flex items-center gap-2 cursor-pointer group"
+        className="flex items-center cursor-pointer"
       >
-        <div className="w-6 h-6 bg-black rounded-sm flex items-center justify-center transition-transform group-hover:rotate-12 duration-300">
-          <span className="text-white font-technical text-sm leading-none">A</span>
-        </div>
         <span className="text-black font-semibold tracking-[0.25em] text-sm uppercase" style={{ fontFamily: 'Inter, sans-serif' }}>
           ATHER
         </span>
@@ -78,7 +75,7 @@ export default function Header({ currentScreen, onScreenChange }: HeaderProps) {
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="absolute top-[65px] left-0 right-0 bg-white border-b border-black/10 py-6 px-6 flex flex-col gap-4 shadow-xl z-50 lg:hidden">
+        <div className="absolute top-16 left-0 right-0 bg-white border-b border-black/10 py-6 px-6 flex flex-col gap-4 shadow-xl z-50 lg:hidden">
           <span className="text-[9px] font-bold tracking-widest text-zinc-400 uppercase border-b border-black/5 pb-1">Suit Uplink Systems</span>
           {navItems.map((item) => {
             const isActive = currentScreen === item.screen;

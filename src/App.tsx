@@ -39,8 +39,8 @@ export default function App() {
         )}
       </main>
 
-      {/* Stylized Brand Footer */}
-      <Footer onScreenChange={setCurrentScreen} />
+      {/* Full-bleed image footer — last element on the site */}
+      <Footer />
     </div>
   );
 }
