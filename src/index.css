@@ -15,6 +15,19 @@
     background-size: 100% 100%;
   }
 
+  .hero-image-mask {
+    mask-image:
+      linear-gradient(to right, transparent 0%, black 22%, black 100%),
+      linear-gradient(to top, transparent 0%, black 18%, black 100%),
+      linear-gradient(to bottom, transparent 0%, black 12%, black 100%);
+    mask-composite: intersect;
+    -webkit-mask-image:
+      linear-gradient(to right, transparent 0%, black 22%, black 100%),
+      linear-gradient(to top, transparent 0%, black 18%, black 100%),
+      linear-gradient(to bottom, transparent 0%, black 12%, black 100%);
+    -webkit-mask-composite: source-in;
+  }
+
   .font-technical-header {
     font-family: 'Anton', sans-serif;
     text-transform: uppercase;

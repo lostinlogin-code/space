@@ -43,14 +43,29 @@ export default function LandingView({ onScreenChange }: LandingViewProps) {
       <header className="relative min-h-[85vh] flex flex-col justify-center overflow-hidden px-8 md:px-20 py-20">
         
         {/* Large Vertical Background Kanji - Match mockup perfectly */}
-        <div className="absolute right-0 top-1/2 -translate-y-1/2 h-[70%] flex items-center pointer-events-none select-none w-1/3 z-0">
-          <div className="grid grid-cols-2 text-[16vw] leading-[0.75] font-black opacity-5 gap-y-10 gap-x-6 text-black select-none font-technical">
+        <div className="absolute right-0 top-1/2 -translate-y-1/2 h-[70%] flex items-center justify-end pointer-events-none select-none w-1/4 z-0">
+          <div className="grid grid-cols-2 text-[14vw] leading-[0.75] font-black opacity-10 gap-y-10 gap-x-6 text-black select-none font-technical">
             <div className="flex items-center justify-center">真</div>
             <div className="flex items-center justify-center">空</div>
             <div className="flex items-center justify-center">領</div>
             <div className="flex items-center justify-center">域</div>
           </div>
         </div>
+
+        {/* Hero Astronaut Portrait - as in the reference video */}
+        <motion.div
+          initial={{ opacity: 0, x: 60 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 1, ease: 'easeOut' }}
+          className="hidden md:block absolute right-0 top-0 bottom-0 w-[58%] lg:w-[52%] pointer-events-none z-[5]"
+          aria-hidden="true"
+        >
+          <img
+            src="/images/astronaut-hero.png"
+            alt=""
+            className="hero-image-mask absolute right-[4%] top-1/2 -translate-y-1/2 h-[105%] max-h-none w-auto object-cover object-left"
+          />
+        </motion.div>
 
         {/* Decorative Grid Lines to match technical blueprint style */}
         <div className="absolute inset-0 border-x border-black/5 pointer-events-none max-w-7xl mx-auto z-0" />
